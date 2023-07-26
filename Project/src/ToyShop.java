@@ -93,17 +93,12 @@ public class ToyShop {
 
         Random random1 = new Random();
         for (int k = 0; k < lotteryQueueSize; k++){
-            System.out.println(k);
-
             int randomDrop = random1.nextInt(totalFrequency)+1;
-            System.out.println(randomDrop);
                 for (Interval item1 : intervals){
                     if (randomDrop >= item1.lowerBorder && randomDrop <= item1.upperBorder){
                         lotteryQueue.add(item1.toy);
-                        System.out.println(k);
                     }
                 }
-
         }
     }
 }
