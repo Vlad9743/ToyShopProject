@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,11 +30,15 @@ public class ToyShop {
     }
 
     public String LotteryQueueToString(){
-        String output = "";
+        String output = "Список призовых игрушек: \n";
         for (Toy item : lotteryQueue){
             output += item.getName() + " | ";
         }
         return output;
+    }
+
+    public Integer getCurrentLotteryQueueSize(){
+        return lotteryQueue.size();
     }
     public void addToy(Toy toy){
         toyList.add(toy);
@@ -45,7 +51,7 @@ public class ToyShop {
     }
 
     public void basicToyShopGenerator(){
-        Toy toy0 = new Toy(0,"Пусто", 50, 50);
+        Toy toy0 = new Toy(0,"Пусто", 10000, 50);
         Toy toy1 = new Toy(1,"Петрушка", 5, 10);
         Toy toy2 = new Toy(2,"Карабас-Барабас", 7, 35);
         Toy toy3 = new Toy(3,"Тортилла", 2, 5);
@@ -63,6 +69,25 @@ public class ToyShop {
             }
         }
         return null;
+    }
+
+    public String givePrize() throws IOException {
+        Toy prize = lotteryQueue.remove(0);
+        for (Toy item : toyList) {
+            if (item.getId() == prize.getId()) {
+                int tempQuantity = item.getQuantity();
+                item.setQuantity(tempQuantity - 1);
+            }
+        }
+        try(FileWriter writer = new FileWriter("PrizeList.txt", true)){
+            String text = prize.getName() + "\n";
+            writer.write(text);
+            writer.flush();
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        return  "Вы получили: " + prize.getName();
     }
 
     public void setLotteryQueue(){
